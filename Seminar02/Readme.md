@@ -5,7 +5,7 @@
 ## Преговор от миналия път
 Определете сложностите на следните алгоритми:
 
-```
+```cpp
 size_t digitsCount(int n){
   if(n == 0) return 1;
   size_t result = 0;
@@ -19,7 +19,7 @@ size_t digitsCount(int n){
 }
 ```
 
-```
+```cpp
 Matrix multiply(const Matrix& matrix1, const Matrix& matrix2){
   if(matrix1.cols() != matrix2.rows()) throw std::runtime_error("matrices cannot be multiplied");
 
@@ -39,14 +39,14 @@ Matrix multiply(const Matrix& matrix1, const Matrix& matrix2){
 
 ## Примери за рекурсивни алгоритми
 
-```
+```cpp
 int fact(int n){
 	if(n == 0) return 1;
 	return n * fact(n-1);
 }
 ```
 
-```
+```cpp
 template<class T>
 void printAllSubsetsHelper(const std::vector<T> &v, std::vector<bool>& contains, size_t depth){
 
@@ -86,7 +86,8 @@ void printAllSubsets(const std::vector<T>& v){
 
 Нека А е масив и съдържа елементите $a_0, a_1, ..., a_{n-1}$ и нека $m = (n - 1) / 2$ е индекса на средния елемент. Подредете масива, така че да отговаря на следните условия:
 
-- $a_m \leq a_{m-1} \ \& \ a_m \leq a_{m+1}$
+
+- $a_m \leq a_{m-1} \ \land \ a_m \leq a_{m+1}$
 - $a_0 \leq a_1 \leq ... \leq a_{m-1}$
 - $a_{n-1} \leq a_{n-2} \leq ... \leq a_{m+1}$
 
