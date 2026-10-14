@@ -20,7 +20,7 @@ size_t partition(std::vector<T>& v, size_t begin, size_t end){
     }
 
     // v[ind - 1] <= pivot = v[begin], защото не сме го местили
-    // освен това v[ind - i] < pivot за всяко i=1,2, ..., ind, така че
+    // освен това v[ind - i] <= pivot за всяко i=1,2, ..., ind, така че
     // тази позиция е коректна
     std::swap(v[begin], v[ind - 1]);
 
