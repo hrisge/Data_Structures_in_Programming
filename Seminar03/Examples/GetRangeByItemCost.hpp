@@ -11,24 +11,25 @@ int binarySearchFirst(const Container& arr, const T& target, const std::function
   int left = 0;
   int right = arr.size() - 1;
 
-  // a = b <=> !(a < b) && !(a > b) - от свойствата на линейната наредба
-  // съответно ако lessThan не е линейна наредба функцията няма да работи коректно
+
+  // a = b <=> !(a < b) & !(a > b) - от свойствата на линейната наредба
+  // ако lessThan не задава линейна наредба, то алгоритъмът няма да работи коректно
   std::function<bool(const T&, const T&)> equals = 
-  [&](const T& a, const T& b){
-    return !lessThan(a , b) && !lessThan(b, a);
-  };
+    [&](const T& a, const T& b){
+      return !lessThan(a , b) && !lessThan(b, a);
+    };
 
   while(left <= right){
     int mid = (right - left) / 2 + left;
-    if(equals(arr[mid], target)){
+    if(lessThan(target, arr[mid])) right = mid - 1;
+    else if(lessThan(arr[mid], target)) left = mid + 1;
+    else {
       // понеже масива е сортиран, ако има повтарящи се елементи, те ще са последователни
       // тогава е достатъчно, когато има повтарящ се елемент преди този, който сме открили
       // да търсим отново измежду елементите преди него
       if(mid > 0 && equals(arr[mid - 1], arr[mid])) right = mid - 1;
       else return mid;
     } 
-    else if(lessThan(arr[mid], target)) left = mid + 1;
-    else right = mid - 1;
   }
 
   // ако не е намерен елемента връщаме позицията, на която би стоял
@@ -49,13 +50,14 @@ int binarySearchLast(const Container& arr, const T& target, const std::function<
 
   while(left <= right){
     int mid = (right - left) / 2 + left;
-    // аналогично на горното само че този път ще търсим измежду елементите след открития
-    if(equals(arr[mid], target)){
+    
+    if(lessThan(target, arr[mid])) right = mid - 1;
+    else if(lessThan(arr[mid], target)) left = mid + 1;
+    else {
+      // аналогично на горното само че този път ще търсим измежду елементите след открития
       if(mid < arr.size() - 1 && equals(arr[mid + 1], arr[mid])) left = mid + 1;
       else return mid + 1; // + 1, защото искаме елемента след последния
     } 
-    else if(lessThan(arr[mid], target)) left = mid + 1;
-    else right = mid - 1;
   }
  
   return left;

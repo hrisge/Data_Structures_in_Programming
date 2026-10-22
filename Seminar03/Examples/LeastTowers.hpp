@@ -22,6 +22,8 @@ size_t leastTowers(const std::vector<size_t>& sizes){
   std::vector<size_t> towers(sizes.size());
   size_t result = 0; // това ще е броя на елементите в масива towers
 
+  // целта на алгоритъма е за кубче i да намерим най-малкото кубче index, върху което можем да го поставим
+  // модифицирания ни binary search прави точно това
   for(size_t i = 0; i < sizes.size(); i++){
     // тук можем да използваме binarySearch в масива towers[0...result], защото той винаги е сортиран
     int index = binarySearch(towers, sizes[i], 0, result);
@@ -31,8 +33,10 @@ size_t leastTowers(const std::vector<size_t>& sizes){
       result++; 
     }
 
+    // "поставяме" кубчето i върху кубчето index 
     towers[index] = sizes[i]; 
   }
 
   return result;
 }
+
