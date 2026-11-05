@@ -201,14 +201,15 @@ public:
       push_front(element);
       return;
     }
+	if(!it) {
+      return;
+    }
     // ако добавяме след края трябва да променим m_end
     if(it == m_end){
       push_back(element);
       return;
     }
-    if(!it) {
-      return;
-    }
+
 
     Node* newNode = new Node(element, it.pos->next);
     it.pos->next = newNode;
@@ -220,11 +221,12 @@ public:
        pop_front();
        return;
     }
+	if(!it) return;
     // ако премахваме последния елемент също трябва да променим m_end
     if(it.pos->next == m_end){
       m_end = it.pos;
     }
-    if(!it) return;
+ 
 
     Node* toDelete = it.pos->next;
 
