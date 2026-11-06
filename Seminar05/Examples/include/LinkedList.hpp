@@ -201,7 +201,7 @@ public:
       push_front(element);
       return;
     }
-	if(!it) {
+    if(!it) {
       return;
     }
     // ако добавяме след края трябва да променим m_end
@@ -209,7 +209,7 @@ public:
       push_back(element);
       return;
     }
-
+    
 
     Node* newNode = new Node(element, it.pos->next);
     it.pos->next = newNode;
@@ -221,12 +221,12 @@ public:
        pop_front();
        return;
     }
-	if(!it) return;
+    if(!it) return;
     // ако премахваме последния елемент също трябва да променим m_end
     if(it.pos->next == m_end){
       m_end = it.pos;
     }
- 
+    
 
     Node* toDelete = it.pos->next;
 
@@ -390,6 +390,209 @@ public:
       return result;
     }
   */
+
+  // -----------------------------------------------------------------------------
+  // задачи
+
+  void insert_before(const T& element, iterator it){
+    if(!it) {
+      push_back(element);
+      return;
+    }
+    if(it == begin()){
+      push_front(element);
+      return;
+    }
+    
+    iterator i = begin();
+    while(i.pos->next != it.pos){
+      ++i;
+    }
+    insert_after(element, i);
+  }
+
+  void remove_before(iterator it){
+    if(!it){
+      pop_back();
+      return;
+    }
+    if(it == ++begin()){
+      pop_front();
+    }
+    if(it == begin()){
+      return;
+    }
+
+    iterator i = begin();
+    while(i.pos->next->next != it){
+      ++i;
+    }
+
+    remove_after(i);
+  }
+
+  void merge(LinkedList &&other) {
+    if (this == &other)
+      return;
+
+    if (empty()) {
+      *this = std::move(other);
+      return;
+    }
+    if (other.empty())
+      return;
+
+    Node* prev = nullptr;
+    Node* i = m_begin;
+    Node* j = other.m_begin;
+
+    while (i && j) {
+      if (i->data <= j->data) {
+        prev = i;
+        i = i->next;
+      } 
+      else /*(i->data > j->data)*/{
+        // запазваме следващия възел във временна променлива
+        Node* jNext = j->next;
+
+        // вмъкваме j преди i, като внимаваме за случая, когато вмъкваме преди началото
+        if (prev)
+          prev->next = j;
+        else
+          m_begin = j;
+
+        j->next = i;
+        prev = j;
+        j = jNext;
+      }
+    }
+    // ако има още елементи в other ги конкатенираме накрая на нашия списък
+    if (j) {
+      m_end->next = j; 
+      m_end = other.m_end;
+    }
+
+    m_size += other.m_size;
+
+    other.m_begin = nullptr;
+    other.m_end = nullptr;
+    other.m_size = 0;
+  }
+
+  void unique(){
+    if(empty()) return;
+    
+    iterator prev = begin();
+    iterator cur = ++begin();
+
+    while(cur){
+      // ако има два последователни повтарящи се елемента, премахваме втория
+      if(*prev == *cur){
+        remove_after(prev);
+        // пренасочваме cur, защото старата му стойност вече е невалидна
+        cur = prev.pos->next;
+      }
+      else{
+        ++cur;
+        ++prev;
+      } 
+    }
+  }
+
+  template <class IteratorType>
+  void prepend_range(IteratorType range_begin, IteratorType range_end){
+
+    if(range_begin == range_end) return;
+
+    push_front(*range_begin);
+    ++range_begin;
+
+    iterator it = begin();
+    while(range_begin != range_end){
+      insert_after(*range_begin, it);
+      ++range_begin;
+      ++it;
+    }
+  }
+
+  template <class IteratorType>
+  void insert_range_after(IteratorType range_begin, IteratorType range_end, iterator it){
+    if(!it) return;
+    for(IteratorType i = range_begin; i != range_end; ++i){
+      insert_after(*i, it);
+      ++it;
+    }
+  }
+
+
+
+  void concat(LinkedList&& other) {
+    if(&other == this) return;
+    if(empty()){
+      *this = std::move(other);
+      return;
+    }
+    if(other.empty()) return;
+
+    m_size += other.m_size;
+
+    // закачаме нашия край към началото на другия списък
+    m_end->next = other.m_begin;
+    // след това преместваме края в края на другия списък
+    m_end = other.m_end;
+
+    other.m_begin = nullptr;
+    other.m_end = nullptr;
+    other.m_size = 0;
+  }
+
+
+  void splice_after(LinkedList&& other, iterator it){
+    if (&other == this) return;
+    if(!it) return;
+    if(it == m_end || other.empty() || empty()){
+      concat(std::move(other));
+      return;
+    } 
+    
+
+    m_size += other.m_size;
+
+    other.m_end->next = it.pos->next;
+    it.pos->next = other.m_begin;
+
+    other.m_begin = nullptr;
+    other.m_end = nullptr;
+    other.m_size = 0;
+  }
+
+  void partition(iterator pivot){
+    if(!pivot) return;
+    LinkedList left = filter([&](const T& data){return data < *pivot;});
+    LinkedList mid = filter([&](const T& data){return data == *pivot;});
+    LinkedList right = filter([&](const T& data){return data > *pivot;});
+
+    LinkedList result;
+    result.concat(std::move(left));
+    result.concat(std::move(mid));
+    result.concat(std::move(right));
+
+    *this = std::move(result);
+  }
+
+  void rotate_right(size_t n){
+    if(m_size <= 1 || n == 0) return;
+    
+    n = n % m_size;
+    n = m_size - n;
+    m_end->next = m_begin;
+
+    for(size_t i = 0; i < n; i++){
+      m_end = m_end->next;
+    }
+    m_begin = m_end->next;
+    m_end->next = nullptr;
+  }
 };
 
 
