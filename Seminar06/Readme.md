@@ -21,7 +21,7 @@
   </thead>
   <tbody>
     <tr><td>push_front</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(n)</td><td>O(1)*</td></tr>
-    <tr><td>push_back</td><td>O(1)$^{1.}$</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(1)*</td><td>O(1)*</td></tr>
+    <tr><td>push_back</td><td>O(1)<sup>1.</sup></td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(1)*</td><td>O(1)*</td></tr>
     <tr><td>pop_front</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(n)</td><td>O(1)</td></tr>
     <tr><td>pop_back</td><td>O(n)</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
     <tr><td>insert_after</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(n)</td><td>O(1)*</td></tr>
@@ -30,7 +30,7 @@
     <tr><td>remove_before</td><td>O(n)</td><td>O(1)</td><td>O(1)</td><td>O(1)</td><td>O(n)</td><td>O(1)</td></tr>
     <tr><td>operator[] (пряк достъп)</td><td>O(n)</td><td>O(1)</td><td>O(n)</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
     <tr><td>find</td><td>O(n)</td><td>O(1)</td><td>O(n)</td><td>O(1)</td><td>O(n)</td><td>O(1)</td></tr>
-    <tr><td>size</td><td>O(1)$^{2.}$</td><td>O(1)</td><td>O(1)$^{2.}$</td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
+    <tr><td>size</td><td>O(1)<sup>2.</sup></td><td>O(1)</td><td>O(1)<sup>2.</sup></td><td>O(1)</td><td>O(1)</td><td>O(1)</td></tr>
   </tbody>
 </table>
 
