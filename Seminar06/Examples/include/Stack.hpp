@@ -1,6 +1,9 @@
 #pragma once
 
 #include "LinkedList.hpp"
+
+
+
 template <class T>
 class Stack {
   LinkedList<T> list;
@@ -18,12 +21,14 @@ public:
     list.push_front(element);
   }
 
-  void pop(const T& element){
+  void pop(){
     list.pop_front();
   }
 
-  T& peek() const {
+  const T& peek() const {
     return *list.begin();
   }
 
 };
+
+// всички методи са с константна сложност по време

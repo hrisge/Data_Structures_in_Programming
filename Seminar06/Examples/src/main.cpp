@@ -1,27 +1,9 @@
-#include <ios>
 #include <iostream>
+#include <stdexcept>
 #include "LinkedList.hpp"
-
-struct Node{
-    int data;
-    Node* next;
-    Node(int data, Node* next = nullptr) :
-    data(data), next(next) {}
-};
-
-bool detectCycle(Node* head){
-    if(!head && !head->next) return false;
-
-    Node* slow = head;
-    Node* fast = head->next;
-
-    while(slow != fast && slow && fast && fast->next){
-        slow = slow->next;
-        fast = fast->next->next;
-    }
-
-    return slow == fast;
-}
+#include "DetectCycle.hpp"
+#include "ValidParentheses.hpp"
+#include "EvaluateRPN.hpp"
 
 int main() {
     LinkedList<int> ll;
@@ -52,5 +34,27 @@ int main() {
     iter2->next = cycleStart;
     iter->next = cycleStart;
 
-    std::cout << std::boolalpha << detectCycle(head) << std::endl;
+    std::cout << std::boolalpha << detectCycle(head) << std::endl; // true
+
+    std::cout << std::boolalpha << validParentheses("(abc)[def]{ghi}") << std::endl; // true
+    std::cout << std::boolalpha << validParentheses("") << std::endl; // true
+    std::cout << std::boolalpha << validParentheses("[(])") << std::endl; // false
+    std::cout << std::boolalpha << validParentheses("(()") << std::endl; // false
+    std::cout << std::boolalpha << validParentheses("())") << std::endl; // false
+    std::cout << std::boolalpha << validParentheses("([{}])") << std::endl; // true
+
+    std::cout << evaluateRPN({"2","1","+","3","*"}) << std::endl;
+    std::cout << evaluateRPN({"4","13","5","/","+"}) << std::endl;
+    try{
+        evaluateRPN({"1", "2"});
+    }
+    catch(std::invalid_argument e){
+        std::cout << e.what() << std::endl;
+    }
+    try{
+        evaluateRPN({"2", "+", "1"});
+    }
+    catch(std::invalid_argument e){
+        std::cout << e.what() << std::endl;
+    }
 }

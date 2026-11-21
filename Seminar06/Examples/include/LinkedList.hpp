@@ -87,6 +87,38 @@ public:
     friend LinkedList<T>;
   };
 
+class const_iterator{
+    Node* pos;
+  public:
+    const_iterator(Node* pos) : pos(pos) {}
+
+    bool valid() const {
+      return pos;
+    }
+
+    operator bool() const {
+      return valid();
+    }
+
+    const_iterator& operator++(){
+      pos = pos->next;
+      return *this;
+    }
+
+    bool operator!=(const const_iterator& other) const {
+      return pos != other.pos;
+    }
+
+    bool operator==(const const_iterator& other) const {
+      return pos == other.pos;
+    }
+
+    const T& operator*() const {
+      return pos->data;
+    }
+
+    friend LinkedList<T>;
+  };
 
   iterator begin() {
     return m_begin;
@@ -96,12 +128,26 @@ public:
     return nullptr;
   }
 
+  const_iterator begin() const {
+    return m_begin;
+  }
+
+  const_iterator end() const {
+    return nullptr;
+  }
+
   // ако искаме константни begin() и end() методи ще трябва да си направим константен итератор
   // const_iterator begin() const {
   //   return m_begin;
   // }
 
   LinkedList() : m_begin(nullptr), m_end(nullptr), m_size(0) {}
+
+  LinkedList(const std::vector<T>& v) : LinkedList() {
+    for(const T& x : v){
+      push_back(x);
+    }
+  }
 
   //2. бях забравил да извикам default конструктора в copy и move конструкторите
   LinkedList(const LinkedList& other) : LinkedList() {
@@ -336,7 +382,6 @@ public:
     );
   }
 
-  // от тук започват нещата, които правихме в час
   void push_back(Node* node){
     if(empty()){
       m_begin = m_end = node;
